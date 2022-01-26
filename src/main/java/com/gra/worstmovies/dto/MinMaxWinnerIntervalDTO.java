@@ -7,9 +7,9 @@ import java.util.List;
 @XmlRootElement
 public class MinMaxWinnerIntervalDTO implements Serializable {
 
-  private List<MovieProducerDTO> max;
-
   private List<MovieProducerDTO> min;
+
+  private List<MovieProducerDTO> max;
 
   public List<MovieProducerDTO> getMax() {
     return max;

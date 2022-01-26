@@ -36,20 +36,9 @@ public class MovieProducerService {
   }
 
   public MinMaxWinnerIntervalDTO getWorstMovieWinners() {
-    minIntervalWinnerMovieList = new ArrayList<>();
-    minIntervalWinnerMovieList = new ArrayList<>();
-
     List<MovieProducersBean> moviesProducers = movieProducerRepository.findWinnersProducers();
     MinMaxWinnerIntervalDTO minMaxWinnerIntervalDTO = getProducersMinAndMaxInterval(moviesProducers);
     return minMaxWinnerIntervalDTO;
-  }
-
-  private void createAndAddMovieProducerBean(Movie movie, MovieProducer movieProducer, List<MovieProducersBean> movieProducers) {
-    MovieProducersBean movieProducerBean = null;
-    movieProducerBean = new MovieProducersBean();
-    movieProducerBean.setProducer(movieProducer.getProducer());
-    movieProducerBean.setYear(movie.getYear());
-    movieProducers.add(movieProducerBean);
   }
 
   protected MinMaxWinnerIntervalDTO getProducersMinAndMaxInterval(List<MovieProducersBean> worstMovieWinners) {
@@ -63,8 +52,8 @@ public class MovieProducerService {
 
     findMinAndMaxToAdd(movieProducerDTOs);
 
-    minMaxWinnerIntervalDTO.setMax(maxIntervalWinnerMovieList);
     minMaxWinnerIntervalDTO.setMin(minIntervalWinnerMovieList);
+    minMaxWinnerIntervalDTO.setMax(maxIntervalWinnerMovieList);
 
     return minMaxWinnerIntervalDTO;
   }
@@ -113,37 +102,6 @@ public class MovieProducerService {
     movieProducerDTO.setFollowingWin(lastMovieProducer.getYear());
     movieProducerDTO.setInterval(lastMovieProducer.getYear()-firstMovieProducersBean.getYear());
     return movieProducerDTO;
-  }
-
-  private boolean isMinIntervalLessOrEqualThenActual(List<MovieProducerDTO> list, int interval) {
-    for (MovieProducerDTO movieProducerDTO : list) {
-      if(movieProducerDTO.getInterval() > interval){
-        return true;
-      }
-    }
-    return false;
-  }
-
-
-  private boolean isMaxIntervalGreaterOrEqualThenActual(List<MovieProducerDTO> list, int interval) {
-    for (MovieProducerDTO movieProducerDTO : list) {
-      if(movieProducerDTO.getInterval() <= interval){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private MovieProducerDTO createMovieProducerDTO(String producer, Integer previousWin, Integer followingWin) {
-    MovieProducerDTO movieProducerDTO = new MovieProducerDTO();
-    movieProducerDTO.setProducer(producer);
-    movieProducerDTO.setPreviousWin(previousWin);
-    movieProducerDTO.setFollowingWin(followingWin);
-    return movieProducerDTO;
-  }
-
-  public <E> Boolean isListNotNullOrEmpty(Collection<E> collection) {
-    return collection != null && !collection.isEmpty();
   }
 
 }

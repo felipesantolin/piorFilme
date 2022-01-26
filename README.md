@@ -13,7 +13,7 @@ cd piorFilme
 
 <h2>Passo 3: Executar o seguinte comando</h2>
 
-mvn exec:java
+mvn clean install exec:java
 
 <h2>Passo 4: Acesse o endereço abaixo</h2>
 <a href="http://localhost:8080/producers/minmaxwinnerinterval">Link para resultado</a>

@@ -75,11 +75,9 @@ public class DataInitializatorService {
   private void createProducersFromLine(Movie movie, String producersFromLine) {
     producersFromLine = producersFromLine.replaceAll("\\sand\\s", ",");
     String[] splitProducers = producersFromLine.split(",");
-    System.out.println(producersFromLine);
     for (int i = 0; i < splitProducers.length; i++) {
       String producer = splitProducers[i];
       if(!producer.trim().isEmpty()) {
-        System.out.println(producer);
         movieProducerService.create(movie, producer.trim());
       }
     }

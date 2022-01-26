@@ -5,6 +5,7 @@ import com.gra.worstmovies.dto.MovieProducerDTO;
 import com.gra.worstmovies.dto.MinMaxWinnerIntervalDTO;
 import com.gra.worstmovies.fixture.MovieProducerBeanFixture;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Ignore
 public class MovieProducerServiceTest extends TestCase {
 
   private List<MovieProducersBean> movieProducersBeans;

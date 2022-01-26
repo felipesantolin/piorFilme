@@ -17,7 +17,7 @@ public class Server {
         HttpServer httpServer = server.initServer();
         new DataInitializatorService().init();
         System.out.println("#### SERVER Started ####");
-        System.out.println("#### http://localhost:8080/producers/minmaxwinnerinterval ####");
+        System.out.println("#### http://localhost:8080/movieproducers/minmaxwinnerinterval ####");
         System.in.read();
         httpServer.stop();
     }
