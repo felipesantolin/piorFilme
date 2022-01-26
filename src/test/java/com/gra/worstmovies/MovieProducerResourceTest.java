@@ -34,24 +34,23 @@ public class MovieProducerResourceTest {
   }
 
   @Test
-  @DisplayName("Deve verifica se servidor iniciou")
-  public void testServerConnection() {
+  @DisplayName("Deve verificar se servidor iniciou")
+  public void testServerConnectionStarted() {
     Assert.assertTrue(httpServer.isStarted());
   }
 
   @Test
-  @DisplayName("Deve acessar a url do servidor e retornar um array de Movie com tamanho 1")
+  @DisplayName("Deve acessar a url do servidor e retornar uma Lista e que não pode estar vazia")
   public void testMovieGetRequest() {
     Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://localhost:8080");
-    new MovieService().create(2022, "Movie", Boolean.TRUE);
     String response = target.path("/movies").request().get(String.class);
     List<?> result = new Gson().fromJson(response, List.class);
     Assert.assertTrue(!result.isEmpty());
   }
 
   @Test
-  @DisplayName("Deve acessar a url do servidor e retornar um array de Movie com tamanho 1")
+  @DisplayName("Deve acessar a url do servidor e retornar o menor e Maior Intervalo")
   public void testProducersMinMaxWinnerInterval() {
     Client client = ClientBuilder.newClient();
     WebTarget target = client.target("http://localhost:8080");

@@ -16,13 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Ignore
 public class MovieProducerServiceTest extends TestCase {
 
   private List<MovieProducersBean> movieProducersBeans;
 
   @Test
-  @DisplayName("Deve verificar se criou o Intervalo do Producer 1")
+  @DisplayName("Deve verificar se criou o Intervalo do Producer 1 Corretamente")
   public void testDeveVerificarSeCriouIntervaloCorretamente(){
     String producer = "Producer 1";
     List<MovieProducersBean> movieProducersFromProducer1 = Arrays.asList(
@@ -36,8 +35,8 @@ public class MovieProducerServiceTest extends TestCase {
   }
 
   @Test
-  @DisplayName("Deve verificar se criou o Intervalo do Producer 1")
-  public void testDeveAgruparPorProducerEIgnorarProducerComApenas(){
+  @DisplayName("Deve Agrupar por Producers e ignorar Producers com apenas 1 vitória")
+  public void testDeveAgruparPorProducerEIgnorarProducerComApenas1Resultado(){
     adicionarMovieProducers();
     MovieProducerService movieProducerService = new MovieProducerService();
     List<MovieProducerDTO> movieProducerDTOS = movieProducerService.groupByProducerAndFilter(movieProducersBeans);
@@ -46,7 +45,7 @@ public class MovieProducerServiceTest extends TestCase {
   }
 
   @Test
-  @DisplayName("Deve encontrar o Menor e Maior Intervalo do Producer")
+  @DisplayName("Deve encontrar o maior e menor intervalo do Producer E Adicionar")
   public void testDeveEncontrarOMaiorEMenorIntervaloEAdicionarNaLista(){
     adicionarMovieProducers();
     MovieProducerService movieProducerService = new MovieProducerService();
@@ -58,7 +57,7 @@ public class MovieProducerServiceTest extends TestCase {
   }
 
   @Test
-  @DisplayName("Deve encontrar o Menor e Maior Intervalo do Producer, com 2 Producers com Máximo")
+  @DisplayName("Deve encontrar o Menor e Maior Intervalo do Producer, com 2 Producers com Maior intervalo igual")
   public void testDeveEncontrarOMaiorEMenorIntervaloEAdicionarCom2VencedoresComMaiorIntervalo(){
     adicionarMovieProducers();
     movieProducersBeans.add(MovieProducerBeanFixture.movieProducer1979WinnerProducer5());
