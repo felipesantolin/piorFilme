@@ -2,25 +2,148 @@ package com.gra.worstmovies.services;
 
 import javax.transaction.Transactional;
 
+import com.gra.worstmovies.common.MovieProducersBean;
+import com.gra.worstmovies.dto.MovieProducerDTO;
+import com.gra.worstmovies.dto.MinMaxWinnerIntervalDTO;
 import com.gra.worstmovies.entities.Movie;
 import com.gra.worstmovies.entities.MovieProducer;
 import com.gra.worstmovies.repositories.MovieProducerRepository;
+import com.gra.worstmovies.repositories.MovieRepository;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 public class MovieProducerService {
 
-    private MovieProducerRepository movieProducerRepository;
+  private MovieProducerRepository movieProducerRepository;
+  private MovieRepository movieRepository;
 
-    public MovieProducerService(){
-        this.movieProducerRepository = new MovieProducerRepository();
-    }
+  private List<MovieProducerDTO> minIntervalWinnerMovieList;
+  private List<MovieProducerDTO> maxIntervalWinnerMovieList;
 
-    public MovieProducer create(Movie movie, String producer){
-        MovieProducer movieProducer = new MovieProducer();
-        movieProducer.setMovie(movie);
-        movieProducer.setProducer(producer);
-        movieProducerRepository.persist(movieProducer);
-        return movieProducer;
+  public MovieProducerService(){
+    this.movieProducerRepository = new MovieProducerRepository();
+    this.movieRepository = new MovieRepository();
+  }
+
+  public MovieProducer create(Movie movie, String producer){
+    MovieProducer movieProducer = new MovieProducer();
+    movieProducer.setMovie(movie);
+    movieProducer.setProducer(producer);
+    movieProducerRepository.persist(movieProducer);
+    return movieProducer;
+  }
+
+  public MinMaxWinnerIntervalDTO getWorstMovieWinners() {
+    minIntervalWinnerMovieList = new ArrayList<>();
+    minIntervalWinnerMovieList = new ArrayList<>();
+
+    List<MovieProducersBean> moviesProducers = movieProducerRepository.findWinnersProducers();
+    MinMaxWinnerIntervalDTO minMaxWinnerIntervalDTO = getProducersMinAndMaxInterval(moviesProducers);
+    return minMaxWinnerIntervalDTO;
+  }
+
+  private void createAndAddMovieProducerBean(Movie movie, MovieProducer movieProducer, List<MovieProducersBean> movieProducers) {
+    MovieProducersBean movieProducerBean = null;
+    movieProducerBean = new MovieProducersBean();
+    movieProducerBean.setProducer(movieProducer.getProducer());
+    movieProducerBean.setYear(movie.getYear());
+    movieProducers.add(movieProducerBean);
+  }
+
+  protected MinMaxWinnerIntervalDTO getProducersMinAndMaxInterval(List<MovieProducersBean> worstMovieWinners) {
+    MinMaxWinnerIntervalDTO minMaxWinnerIntervalDTO = new MinMaxWinnerIntervalDTO();
+    minIntervalWinnerMovieList = new ArrayList<>();
+    maxIntervalWinnerMovieList = new ArrayList<>();
+
+    worstMovieWinners.stream().findFirst().orElseThrow(RuntimeException::new);
+
+    final List<MovieProducerDTO> movieProducerDTOs = groupByProducerAndFilter(worstMovieWinners);
+
+    findMinAndMaxToAdd(movieProducerDTOs);
+
+    minMaxWinnerIntervalDTO.setMax(maxIntervalWinnerMovieList);
+    minMaxWinnerIntervalDTO.setMin(minIntervalWinnerMovieList);
+
+    return minMaxWinnerIntervalDTO;
+  }
+
+  private void findMinAndMaxToAdd(List<MovieProducerDTO> movieProducerDTOs) {
+    MovieProducerDTO maxMovieProducerDTO = movieProducerDTOs.stream().max(Comparator.comparing(MovieProducerDTO::getInterval)).get();
+    MovieProducerDTO minMovieProducerDTO = movieProducerDTOs.stream().min(Comparator.comparing(MovieProducerDTO::getInterval)).get();
+
+    minIntervalWinnerMovieList.add(minMovieProducerDTO);
+    maxIntervalWinnerMovieList.add(maxMovieProducerDTO);
+    for (MovieProducerDTO movieProducerDTO : movieProducerDTOs) {
+      if(movieProducerDTO.getInterval().equals(minMovieProducerDTO.getInterval())
+              && !movieProducerDTO.getProducer().equals(minMovieProducerDTO.getProducer())){
+        minIntervalWinnerMovieList.add(movieProducerDTO);
+      }
+      if(movieProducerDTO.getInterval().equals(maxMovieProducerDTO.getInterval())
+              && !movieProducerDTO.getProducer().equals(maxMovieProducerDTO.getProducer())){
+        maxIntervalWinnerMovieList.add(movieProducerDTO);
+      }
     }
-    
+  }
+
+  protected List<MovieProducerDTO> groupByProducerAndFilter(List<MovieProducersBean> worstMovieWinners) {
+    Map<String, List<MovieProducersBean>> producers = worstMovieWinners.stream().collect(Collectors.groupingBy(MovieProducersBean::getProducer));
+
+    final List<MovieProducerDTO> movieProducerDTOs = new ArrayList<>();
+
+    producers.forEach((producer,movieProducers) ->{
+      if(movieProducers.size() > 1){
+        movieProducerDTOs.add(compareAndCreateInterval(producer, movieProducers));
+      }
+    });
+    return movieProducerDTOs;
+  }
+
+  protected MovieProducerDTO compareAndCreateInterval(String producer, List<MovieProducersBean> moviesProducer) {
+    MovieProducersBean firstMovieProducersBean = moviesProducer.stream().findFirst().get();
+
+    MovieProducersBean lastMovieProducer = moviesProducer.stream()
+            .filter(mp -> !mp.getYear().equals(firstMovieProducersBean.getYear()))
+            .max(Comparator.comparingInt(yIni -> yIni.getYear() - firstMovieProducersBean.getYear())).get();
+
+    MovieProducerDTO movieProducerDTO = new MovieProducerDTO();
+    movieProducerDTO.setProducer(producer);
+    movieProducerDTO.setPreviousWin(firstMovieProducersBean.getYear());
+    movieProducerDTO.setFollowingWin(lastMovieProducer.getYear());
+    movieProducerDTO.setInterval(lastMovieProducer.getYear()-firstMovieProducersBean.getYear());
+    return movieProducerDTO;
+  }
+
+  private boolean isMinIntervalLessOrEqualThenActual(List<MovieProducerDTO> list, int interval) {
+    for (MovieProducerDTO movieProducerDTO : list) {
+      if(movieProducerDTO.getInterval() > interval){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  private boolean isMaxIntervalGreaterOrEqualThenActual(List<MovieProducerDTO> list, int interval) {
+    for (MovieProducerDTO movieProducerDTO : list) {
+      if(movieProducerDTO.getInterval() <= interval){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private MovieProducerDTO createMovieProducerDTO(String producer, Integer previousWin, Integer followingWin) {
+    MovieProducerDTO movieProducerDTO = new MovieProducerDTO();
+    movieProducerDTO.setProducer(producer);
+    movieProducerDTO.setPreviousWin(previousWin);
+    movieProducerDTO.setFollowingWin(followingWin);
+    return movieProducerDTO;
+  }
+
+  public <E> Boolean isListNotNullOrEmpty(Collection<E> collection) {
+    return collection != null && !collection.isEmpty();
+  }
+
 }

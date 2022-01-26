@@ -1,7 +1,8 @@
 <h1 align="center"> Worst Movie Awards </h1>
 
-<img alt="AUR last modified" src="https://img.shields.io/aur/last-modified/com-gra-worstmovies">
-
+<p align="center">
+<img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
+</p>
 # Passos para reproduzir
 
 <h2>Passo 1: Baixar o projeto</h2>
@@ -15,7 +16,7 @@ cd piorFilme
 mvn exec:java
 
 <h2>Passo 4: Acesse o endereço abaixo</h2>
-http://localhost:8080/producers/minmaxwinnerinterval
+<a href="http://localhost:8080/producers/minmaxwinnerinterval">Link para resultado</a>
 
 <h3>Testes:</h3>
 mvn test

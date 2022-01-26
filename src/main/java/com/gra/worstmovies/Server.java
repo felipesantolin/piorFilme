@@ -25,7 +25,7 @@ public class Server {
 
     public HttpServer initServer() {
         ResourceConfig rc = new ResourceConfig();
-        rc.packages("com.gra.piorfilme.resources");
+        rc.packages("com.gra.worstmovies.resources");
         URI uri = URI.create("http://localhost:8080/");
         HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(uri, rc);
         return httpServer;

@@ -1,7 +1,7 @@
 package com.gra.worstmovies.resources;
 
 import com.google.gson.Gson;
-import com.gra.worstmovies.dto.ProducerDTO;
+import com.gra.worstmovies.dto.MinMaxWinnerIntervalDTO;
 import com.gra.worstmovies.services.MovieService;
 
 import javax.ws.rs.GET;
@@ -16,8 +16,8 @@ public class ProducerResource {
   @Path("/minmaxwinnerinterval")
   @Produces(MediaType.APPLICATION_JSON)
   public String getMinMaxIntervalProducersWinners() {
-    ProducerDTO producerDTO = new MovieService().getWorstMovieWinners();
-    return new Gson().toJson(producerDTO);
+    MinMaxWinnerIntervalDTO minMaxWinnerIntervalDTO = new MovieService().getWorstMovieWinners();
+    return new Gson().toJson(minMaxWinnerIntervalDTO);
   }
 
 }

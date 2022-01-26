@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @XmlRootElement
-public class ProducerDTO implements Serializable {
+public class MinMaxWinnerIntervalDTO implements Serializable {
 
   private List<MovieProducerDTO> max;
 

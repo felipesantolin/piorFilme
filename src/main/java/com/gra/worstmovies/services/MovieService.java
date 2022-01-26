@@ -1,7 +1,7 @@
 package com.gra.worstmovies.services;
 
 import com.gra.worstmovies.common.MovieProducersBean;
-import com.gra.worstmovies.dto.ProducerDTO;
+import com.gra.worstmovies.dto.MinMaxWinnerIntervalDTO;
 import com.gra.worstmovies.entities.Movie;
 import com.gra.worstmovies.entities.MovieProducer;
 import com.gra.worstmovies.dto.MovieProducerDTO;
@@ -27,14 +27,14 @@ public class MovieService {
     this.movieProducerRepository = new MovieProducerRepository();
   }
 
-  public ProducerDTO getWorstMovieWinners() {
+  public MinMaxWinnerIntervalDTO getWorstMovieWinners() {
     minIntervalWinnerMovieList = new ArrayList<>();
     minIntervalWinnerMovieList = new ArrayList<>();
 
     List<MovieProducersBean> moviesProducers = movieProducerRepository.findWinnersProducers();
 //    List<MovieProducersBean> movieProducersBeanListOrdered = moviesProducers.stream().sorted(Comparator.comparing(MovieProducersBean::getProducer)).collect(Collectors.toList());
-    ProducerDTO producerDTO = getProducersMinAndMaxInterval(moviesProducers);
-    return producerDTO;
+    MinMaxWinnerIntervalDTO minMaxWinnerIntervalDTO = getProducersMinAndMaxInterval(moviesProducers);
+    return minMaxWinnerIntervalDTO;
   }
 
   private void createAndAddMovieProducerBean(Movie movie, MovieProducer movieProducer, List<MovieProducersBean> movieProducers) {
@@ -45,8 +45,8 @@ public class MovieService {
     movieProducers.add(movieProducerBean);
   }
 
-  private ProducerDTO getProducersMinAndMaxInterval(List<MovieProducersBean> worstMovieWinners) {
-    ProducerDTO producerDTO = new ProducerDTO();
+  private MinMaxWinnerIntervalDTO getProducersMinAndMaxInterval(List<MovieProducersBean> worstMovieWinners) {
+    MinMaxWinnerIntervalDTO minMaxWinnerIntervalDTO = new MinMaxWinnerIntervalDTO();
     minIntervalWinnerMovieList = new ArrayList<>();
     maxIntervalWinnerMovieList = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class MovieService {
         minIntervalActual = movieProducerDTO.getInterval();
       }
     }
-    return producerDTO;
+    return minMaxWinnerIntervalDTO;
   }
 
   private MovieProducerDTO compareAndCreateInterval(String producer, List<MovieProducersBean> moviesProducer) {
