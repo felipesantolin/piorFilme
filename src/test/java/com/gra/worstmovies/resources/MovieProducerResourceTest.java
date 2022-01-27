@@ -1,6 +1,7 @@
-package com.gra.worstmovies;
+package com.gra.worstmovies.resources;
 
 import com.google.gson.Gson;
+import com.gra.worstmovies.Server;
 import com.gra.worstmovies.dto.MinMaxWinnerIntervalDTO;
 import com.gra.worstmovies.services.DataInitializatorService;
 import org.glassfish.grizzly.http.server.HttpServer;
