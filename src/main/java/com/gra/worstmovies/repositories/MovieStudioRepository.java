@@ -5,5 +5,4 @@ import com.gra.worstmovies.entities.MovieStudio;
 
 public class MovieStudioRepository extends GenericRepository<MovieStudio> {
 
-
 }

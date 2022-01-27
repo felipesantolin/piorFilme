@@ -9,18 +9,18 @@ import com.gra.worstmovies.repositories.MovieStudioRepository;
 @Transactional
 public class MovieStudioService {
 
-    private MovieStudioRepository movieStudioRepository;
+  private MovieStudioRepository movieStudioRepository;
 
-    public MovieStudioService(){
-        this.movieStudioRepository = new MovieStudioRepository();
-    }
+  public MovieStudioService() {
+    this.movieStudioRepository = new MovieStudioRepository();
+  }
 
-    public MovieStudio create(Movie movie, String studio){
-        MovieStudio movieStudio = new MovieStudio();
-        movieStudio.setMovie(movie);
-        movieStudio.setStudio(studio);
-        movieStudioRepository.persist(movieStudio);
-        return movieStudio;
-    }
-    
+  public MovieStudio create(Movie movie, String studio) {
+    MovieStudio movieStudio = new MovieStudio();
+    movieStudio.setMovie(movie);
+    movieStudio.setStudio(studio);
+    movieStudioRepository.persist(movieStudio);
+    return movieStudio;
+  }
+
 }

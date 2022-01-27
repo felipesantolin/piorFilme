@@ -3,7 +3,6 @@ package com.gra.worstmovies;
 import com.google.gson.Gson;
 import com.gra.worstmovies.dto.MinMaxWinnerIntervalDTO;
 import com.gra.worstmovies.services.DataInitializatorService;
-import com.gra.worstmovies.services.MovieService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;

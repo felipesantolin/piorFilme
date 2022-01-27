@@ -18,7 +18,7 @@ public class Movie extends AbstractEntity {
   private String title;
 
   private Boolean winner;
-  
+
   @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
   private Set<MovieStudio> studios;
 

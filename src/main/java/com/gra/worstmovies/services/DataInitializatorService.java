@@ -13,7 +13,6 @@ import com.opencsv.CSVReaderBuilder;
 
 public class DataInitializatorService {
 
-
   private MovieService movieService;
   private MovieStudioService movieStudioService;
   private MovieProducerService movieProducerService;

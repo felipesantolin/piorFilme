@@ -7,38 +7,38 @@ import javax.persistence.*;
 @Entity
 public class MovieStudio extends AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_movie")
-    private Movie movie;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_movie")
+  private Movie movie;
 
-    private String studio;
+  private String studio;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Movie getMovie() {
-        return movie;
-    }
+  public Movie getMovie() {
+    return movie;
+  }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
+  public void setMovie(Movie movie) {
+    this.movie = movie;
+  }
 
-    public String getStudio() {
-        return studio;
-    }
+  public String getStudio() {
+    return studio;
+  }
 
-    public void setStudio(String studio) {
-        this.studio = studio;
-    }
+  public void setStudio(String studio) {
+    this.studio = studio;
+  }
 }
