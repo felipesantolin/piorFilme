@@ -82,18 +82,8 @@
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet</artifactId>
-            <version>${jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -104,11 +94,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-dbutils</groupId>
-            <artifactId>commons-dbutils</artifactId>
-            <version>${common-dbutils.version}</version>
         </dependency>
         <dependency>
 	    	<groupId>com.opencsv</groupId>
