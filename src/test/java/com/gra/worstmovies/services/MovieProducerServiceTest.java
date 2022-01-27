@@ -27,10 +27,10 @@ public class MovieProducerServiceTest extends TestCase {
             MovieProducerBeanFixture.movieProducer1980WinnerProducer1(),
             MovieProducerBeanFixture.movieProducer2022WinnerProducer1());
     MovieProducerService movieProducerService = new MovieProducerService();
-    MovieProducerDTO movieProducerDTO = movieProducerService.compareAndCreateInterval(producer, movieProducersFromProducer1);
-    Assert.assertEquals(Integer.valueOf(42), movieProducerDTO.getInterval());
-    Assert.assertEquals(Integer.valueOf(1980), movieProducerDTO.getPreviousWin());
-    Assert.assertEquals(Integer.valueOf(2022), movieProducerDTO.getFollowingWin());
+    List<MovieProducerDTO> moviesProducersDTO = movieProducerService.compareAndCreateInterval(producer, movieProducersFromProducer1);
+    Assert.assertEquals(Integer.valueOf(42), moviesProducersDTO.get(0).getInterval());
+    Assert.assertEquals(Integer.valueOf(1980), moviesProducersDTO.get(0).getPreviousWin());
+    Assert.assertEquals(Integer.valueOf(2022), moviesProducersDTO.get(0).getFollowingWin());
   }
 
   @Test

@@ -62,15 +62,13 @@ public class MovieProducerService {
     MovieProducerDTO maxMovieProducerDTO = movieProducerDTOs.stream().max(Comparator.comparing(MovieProducerDTO::getInterval)).get();
     MovieProducerDTO minMovieProducerDTO = movieProducerDTOs.stream().min(Comparator.comparing(MovieProducerDTO::getInterval)).get();
 
-    minIntervalWinnerMovieList.add(minMovieProducerDTO);
-    maxIntervalWinnerMovieList.add(maxMovieProducerDTO);
+//    minIntervalWinnerMovieList.add(minMovieProducerDTO);
+//    maxIntervalWinnerMovieList.add(maxMovieProducerDTO);
     for (MovieProducerDTO movieProducerDTO : movieProducerDTOs) {
-      if(movieProducerDTO.getInterval().equals(minMovieProducerDTO.getInterval())
-              && !movieProducerDTO.getProducer().equals(minMovieProducerDTO.getProducer())){
+      if(movieProducerDTO.getInterval().equals(minMovieProducerDTO.getInterval())){
         minIntervalWinnerMovieList.add(movieProducerDTO);
       }
-      if(movieProducerDTO.getInterval().equals(maxMovieProducerDTO.getInterval())
-              && !movieProducerDTO.getProducer().equals(maxMovieProducerDTO.getProducer())){
+      if(movieProducerDTO.getInterval().equals(maxMovieProducerDTO.getInterval())){
         maxIntervalWinnerMovieList.add(movieProducerDTO);
       }
     }
@@ -83,25 +81,29 @@ public class MovieProducerService {
 
     producers.forEach((producer,movieProducers) ->{
       if(movieProducers.size() > 1){
-        movieProducerDTOs.add(compareAndCreateInterval(producer, movieProducers));
+        movieProducerDTOs.addAll(compareAndCreateInterval(producer, movieProducers));
       }
     });
     return movieProducerDTOs;
   }
 
-  protected MovieProducerDTO compareAndCreateInterval(String producer, List<MovieProducersBean> moviesProducer) {
-    MovieProducersBean firstMovieProducersBean = moviesProducer.stream().findFirst().get();
+  protected List<MovieProducerDTO> compareAndCreateInterval(String producer, List<MovieProducersBean> moviesProducer) {
+//    MovieProducersBean firstMovieProducersBean = moviesProducer.stream().findFirst().get();
 
-    MovieProducersBean lastMovieProducer = moviesProducer.stream()
-            .filter(mp -> !mp.getYear().equals(firstMovieProducersBean.getYear()))
-            .max(Comparator.comparingInt(yIni -> yIni.getYear() - firstMovieProducersBean.getYear())).get();
+    List<MovieProducerDTO> moviesProducersDTO = new ArrayList<>();
+    for (int i = 0; i < moviesProducer.size() -1; i++) {
+      MovieProducerDTO movieProducerDTO = new MovieProducerDTO();
+      movieProducerDTO.setProducer(producer);
+      movieProducerDTO.setPreviousWin(moviesProducer.get(i).getYear());
+      movieProducerDTO.setFollowingWin(moviesProducer.get(i+1).getYear());
+      movieProducerDTO.setInterval(movieProducerDTO.getFollowingWin()-movieProducerDTO.getPreviousWin());
+      moviesProducersDTO.add(movieProducerDTO);
+    }
+//    MovieProducersBean lastMovieProducer = moviesProducer.stream()
+//            .filter(mp -> !mp.getYear().equals(firstMovieProducersBean.getYear()))
+//            .max(Comparator.comparingInt(yIni -> yIni.getYear() - firstMovieProducersBean.getYear())).get();
 
-    MovieProducerDTO movieProducerDTO = new MovieProducerDTO();
-    movieProducerDTO.setProducer(producer);
-    movieProducerDTO.setPreviousWin(firstMovieProducersBean.getYear());
-    movieProducerDTO.setFollowingWin(lastMovieProducer.getYear());
-    movieProducerDTO.setInterval(lastMovieProducer.getYear()-firstMovieProducersBean.getYear());
-    return movieProducerDTO;
+    return moviesProducersDTO;
   }
 
 }
